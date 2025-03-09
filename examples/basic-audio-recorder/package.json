@@ -1,0 +1,16 @@
+{
+  "name": "soniq-basic-audio-recorder",
+  "version": "1.0.0",
+  "description": "A basic audio recorder example using the Soniq library",
+  "main": "src/app.ts",
+  "scripts": {
+    "build": "bun build ./src/app.ts --outdir ./dist --outfile bundle.js --target browser",
+    "start": "bun build ./src/app.ts --outdir ./dist --outfile bundle.js --target browser && bun run server.js"
+  },
+  "dependencies": {
+    "soniq": "file:../../"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+} 
