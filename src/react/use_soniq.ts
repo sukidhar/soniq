@@ -9,7 +9,11 @@ export type VisualizerType = 'bar' | 'wave' | 'spectrum' | 'particle';
  * Configuration options for the useSoniq hook
  */
 export interface UseSoniqOptions {
-  /** FFT size for audio analysis (power of 2) */
+  /** 
+   * FFT size for audio analysis (power of 2).
+   * Controls frequency resolution - higher values (512, 1024, 2048) provide more detailed 
+   * frequency data but require more processing power.
+   */
   fftSize?: number;
   /** Default color for visualizations */
   defaultColor?: string;

@@ -4,7 +4,11 @@
 export interface VisualizerOptions {
   /** Default color for visualization */
   defaultColor?: string;
-  /** FFT size for audio analysis (power of 2) */
+  /** 
+   * FFT size for audio analysis (power of 2).
+   * Controls frequency resolution - higher values (512, 1024, 2048) provide more detailed 
+   * frequency data but require more processing power.
+   */
   fftSize?: number;
 }
 
