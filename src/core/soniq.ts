@@ -1,14 +1,24 @@
 import { BaseVisualizer, BarVisualizer } from './visualizers';
 
-// Define types for options and callbacks
+/**
+ * Options for configuring a Soniq instance
+ */
 interface SoniqOptions {
+  /** FFT size for audio analysis (power of 2) */
   fftSize?: number;
+  /** Default color for visualizations */
   defaultColor?: string;
+  /** Callback when recording is complete */
   onRecorded?: (blob: Blob) => void;
+  /** Callback when microphone permissions fail */
   onPermissionsFailed?: (error: Error) => void;
+  /** Visualizer to use */
   visualizer?: BaseVisualizer;
 }
 
+/**
+ * Audio visualization and recording manager
+ */
 class Soniq {
   // Private properties with proper typing
   private recorder: MediaRecorder | null = null;
@@ -19,6 +29,10 @@ class Soniq {
   private stream: MediaStream | null = null;
   private options: Required<Omit<SoniqOptions, 'visualizer'>> & { visualizer: BaseVisualizer };
 
+  /**
+   * Creates a new Soniq instance
+   * @param options Configuration options
+   */
   constructor(options: SoniqOptions = {}) {
     // Create default visualizer if none provided
     const visualizer = options.visualizer || new BarVisualizer({
@@ -61,7 +75,10 @@ class Soniq {
     this.isRecording = false;
   }
 
-  // Public methods
+  /**
+   * Sets up audio context and requests microphone permissions
+   * @returns Promise resolving to true if setup was successful
+   */
   public async setup(): Promise<boolean> {
     try {
       this.cleanup();
@@ -107,6 +124,10 @@ class Soniq {
     }
   }
 
+  /**
+   * Starts audio recording
+   * @returns True if recording started successfully
+   */
   public record(): boolean {
     if (!this.recorder) return false;
     try {
@@ -119,6 +140,10 @@ class Soniq {
     }
   }
 
+  /**
+   * Stops recording and processes the audio
+   * @returns True if recording stopped successfully
+   */
   public stop(): boolean {
     if (!this.recorder || !this.isRecording) return false;
     try {
@@ -130,6 +155,10 @@ class Soniq {
     }
   }
 
+  /**
+   * Cancels recording without processing the audio
+   * @returns True if recording was cancelled successfully
+   */
   public cancel(): boolean {
     if (!this.recorder || !this.isRecording) return false;
     try {
@@ -143,6 +172,11 @@ class Soniq {
     }
   }
 
+  /**
+   * Starts visualization on the provided canvas
+   * @param canvas Canvas element to visualize on
+   * @returns True if visualization started successfully
+   */
   public visualize(canvas: HTMLCanvasElement): boolean {
     if (!this.analyser || !this.options.visualizer) {
       return false;
@@ -162,6 +196,10 @@ class Soniq {
     return this.options.visualizer.visualize(canvas);
   }
 
+  /**
+   * Changes the active visualizer
+   * @param visualizer New visualizer to use
+   */
   public setVisualizer(visualizer: BaseVisualizer): void {
     // Clean up the current visualizer
     this.options.visualizer.cleanup();
@@ -175,10 +213,17 @@ class Soniq {
     }
   }
 
+  /**
+   * Checks if recording is in progress
+   * @returns True if currently recording
+   */
   public isCurrentlyRecording(): boolean {
     return this.isRecording;
   }
 
+  /**
+   * Cleans up resources and stops all processes
+   */
   public destroy(): void {
     this.cleanup();
   }

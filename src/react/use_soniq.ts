@@ -2,16 +2,30 @@ import { useEffect, useRef, useState } from 'react';
 import Soniq from '../core/soniq';
 import { BaseVisualizer, BarVisualizer, WaveVisualizer, SpectrumVisualizer, ParticleVisualizer } from '../core/visualizers';
 
+/** Available visualizer types */
 export type VisualizerType = 'bar' | 'wave' | 'spectrum' | 'particle';
 
+/**
+ * Configuration options for the useSoniq hook
+ */
 export interface UseSoniqOptions {
+  /** FFT size for audio analysis (power of 2) */
   fftSize?: number;
+  /** Default color for visualizations */
   defaultColor?: string;
+  /** Callback when recording is complete */
   onRecorded?: (blob: Blob) => void;
+  /** Callback when microphone permissions fail */
   onPermissionsFailed?: (error: Error) => void;
+  /** Initial visualizer type to use */
   initialVisualizer?: VisualizerType;
 }
 
+/**
+ * React hook for audio visualization and recording
+ * @param options Configuration options
+ * @returns Object containing state and methods for audio recording and visualization
+ */
 export function useSoniq({
   fftSize = 512,
   defaultColor = '#0071e3',
@@ -182,15 +196,25 @@ export function useSoniq({
   }, [isSetup]);
 
   return {
+    /** Reference to the canvas element */
     canvasRef,
+    /** Whether audio is set up and ready */
     isSetup,
+    /** Whether recording is in progress */
     isRecording,
+    /** Current visualizer type */
     visualizerType,
+    /** Error if any occurred */
     error,
+    /** Initialize audio and request permissions */
     setup,
+    /** Start recording audio */
     startRecording,
+    /** Stop recording and process audio */
     stopRecording,
+    /** Cancel recording without processing */
     cancelRecording,
+    /** Change the visualizer type */
     changeVisualizer
   };
 }

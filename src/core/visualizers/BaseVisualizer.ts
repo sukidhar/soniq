@@ -1,8 +1,16 @@
+/**
+ * Configuration options for visualizers
+ */
 export interface VisualizerOptions {
+  /** Default color for visualization */
   defaultColor?: string;
+  /** FFT size for audio analysis (power of 2) */
   fftSize?: number;
 }
 
+/**
+ * Base class for audio visualizers
+ */
 export abstract class BaseVisualizer {
   protected analyser: AnalyserNode | null = null;
   protected animationFrameId: number | null = null;
@@ -10,6 +18,10 @@ export abstract class BaseVisualizer {
   protected options: Required<VisualizerOptions>;
   protected dpr: number = 1; // Device pixel ratio
 
+  /**
+   * Creates a new visualizer instance
+   * @param options Configuration options
+   */
   constructor(options: VisualizerOptions = {}) {
     this.options = {
       defaultColor: options.defaultColor || "rgb(208, 213, 221)",
@@ -17,14 +29,26 @@ export abstract class BaseVisualizer {
     };
   }
 
+  /**
+   * Sets the audio analyser node
+   * @param analyser Web Audio API analyser node
+   */
   public setAnalyser(analyser: AnalyserNode): void {
     this.analyser = analyser;
     this.analyser.fftSize = this.options.fftSize;
     this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
   }
 
+  /**
+   * Starts visualization on the provided canvas
+   * @param canvas Canvas element to visualize on
+   * @returns True if visualization started successfully
+   */
   public abstract visualize(canvas: HTMLCanvasElement): boolean;
 
+  /**
+   * Stops visualization and cleans up resources
+   */
   public cleanup(): void {
     if (this.animationFrameId) {
       cancelAnimationFrame(this.animationFrameId);
@@ -57,6 +81,15 @@ export abstract class BaseVisualizer {
     return this.dpr;
   }
 
+  /**
+   * Draws a rounded rectangle on the canvas
+   * @param ctx Canvas rendering context
+   * @param x X position
+   * @param y Y position
+   * @param width Width of rectangle
+   * @param height Height of rectangle
+   * @param radius Corner radius
+   */
   protected drawRoundedRect(
     ctx: CanvasRenderingContext2D, 
     x: number, 
