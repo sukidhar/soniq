@@ -2,7 +2,7 @@
 
 [![Made with Bun](https://img.shields.io/badge/Bun-%23000000.svg?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![codecov](https://codecov.io/gh/sukidhar/soniq/branch/main/graph/badge.svg)](https://codecov.io/gh/sukidhar/soniq)
-[![CI](https://github.com/YOUR_USERNAME/soniq/actions/workflows/ci.yml/badge.svg)](https://github.com/sukidhar/soniq/actions/workflows/ci.yml)
+[![CI](https://github.com/sukidhar/soniq/actions/workflows/ci.yml/badge.svg)](https://github.com/sukidhar/soniq/actions/workflows/ci.yml)
 
 A modern audio visualization and recording library for the web.
 
