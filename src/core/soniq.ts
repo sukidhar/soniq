@@ -69,6 +69,12 @@ class Soniq {
       this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
       this.context = new AudioContextClass();
+      
+      // Ensure the audio context is running (needed for Safari)
+      if (this.context.state === 'suspended') {
+        await this.context.resume();
+      }
+      
       this.analyser = this.context.createAnalyser();
       this.analyser.fftSize = this.options.fftSize;
 
@@ -138,6 +144,21 @@ class Soniq {
   }
 
   public visualize(canvas: HTMLCanvasElement): boolean {
+    if (!this.analyser || !this.options.visualizer) {
+      return false;
+    }
+    
+    // Ensure the audio context is running (needed for Safari)
+    if (this.context && this.context.state === 'suspended') {
+      this.context.resume().catch(err => {
+        console.error('Failed to resume audio context:', err);
+      });
+    }
+    
+    // Ensure the visualizer has the analyser
+    this.options.visualizer.setAnalyser(this.analyser);
+    
+    // Start visualization
     return this.options.visualizer.visualize(canvas);
   }
 
